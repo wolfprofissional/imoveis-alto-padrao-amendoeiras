@@ -112,7 +112,7 @@ window.SITE = {
 
   // Opcional: URL de um Google Apps Script para salvar cada lead numa planilha
   // (garante o registro mesmo que a pessoa não envie a mensagem no WhatsApp).
-  planilhaWebhook: "",
+  planilhaWebhook: "https://script.google.com/macros/s/AKfycbwmKICkCtVPDPxdp89RCLoKritvlVykHJRZaBH18cqOgE0gpuQR44MnE5emuP-7_kHQ/exec",
 
   /* ---------- Perguntas frequentes ---------- */
   faq: [                                                                             // CONFIRMAR respostas
