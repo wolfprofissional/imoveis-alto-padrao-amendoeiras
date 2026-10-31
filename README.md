@@ -11,7 +11,13 @@ Os itens marcados com `// CONFIRMAR` precisam ser revisados antes de publicar.
 - Rastreamento: cole o Meta Pixel e o GA4 no `<head>` do `index.html`. O formulário já dispara `Lead` e `generate_lead`.
 
 ## Como funciona o lead
-O formulário abre o WhatsApp de `whatsappPrincipal` com nome, telefone, período e forma de pagamento já preenchidos. Não precisa de servidor.
+Todos os botões da página levam ao formulário de qualificação: nome, WhatsApp, objetivo, prazo de compra, forma de pagamento e investimento previsto.
+Ao enviar, o WhatsApp do corretor abre com tudo preenchido, mais a classificação do lead (🔥 quente, 🟡 morno ou 🔵 frio) e a origem do anúncio (UTMs).
+
+- `distribuicao: "principal"` envia tudo para `whatsappPrincipal`. Com `"revezamento"`, os leads são divididos entre os corretores.
+- O botão "Falar com [corretor]" envia o lead direto para aquele corretor.
+- `planilhaWebhook` (opcional): salva cada lead numa planilha Google, mesmo que a pessoa não envie a mensagem.
+- Use UTMs nos anúncios, por exemplo `?utm_source=meta&utm_campaign=amendoeiras01`.
 
 ## Publicar
 Site estático: GitHub Pages (Settings → Pages → branch `main`), Netlify ou Vercel.

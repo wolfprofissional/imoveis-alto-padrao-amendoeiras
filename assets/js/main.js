@@ -25,6 +25,8 @@
     return '<div><b>' + esc(n.valor) + (n.unidade ? '<small>' + esc(n.unidade) + '</small>' : '') + '</b><span>' + esc(n.rotulo) + '</span></div>';
   }).join('');
 
+  $('#apresentacao').innerHTML = (im.apresentacao || []).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
+
   // Diferenciais
   $('#diffs').innerHTML = im.diferenciais.map(function (d, i) {
     return '<li><span class="num">0' + (i + 1) + '</span><h3>' + esc(d.titulo) + '</h3><p>' + esc(d.texto) + '</p></li>';
@@ -52,15 +54,13 @@
   $('#map').src = co.mapa;
 
   // Corretores
-  $('#agents').innerHTML = S.corretores.map(function (c) {
+  $('#agents').innerHTML = S.corretores.map(function (c, idx) {
     var ini = c.nome.split(' ').map(function (p) { return p[0]; }).slice(0, 2).join('');
-    var wa = 'https://wa.me/' + c.whatsapp + '?text=' + encodeURIComponent('Olá, ' + c.nome.split(' ')[0] + '! Tenho interesse na ' + im.titulo + '.');
     return '<article class="agent">' +
       '<div class="agent-photo" data-ini="' + esc(ini) + '">' + (c.foto ? '<img src="' + esc(c.foto) + '" alt="' + esc(c.nome) + '" onerror="this.remove()">' : '') + '</div>' +
       '<div><h3>' + esc(c.nome) + '</h3><p class="creci">' + esc(c.creci) + '</p><p>' + esc(c.bio) + '</p>' +
       '<p class="hours">' + esc(S.horario) + '</p>' +
-      '<div class="agent-cta"><a class="btn btn-dark sm" target="_blank" rel="noopener" href="' + wa + '">WhatsApp</a>' +
-      '<a class="link" href="mailto:' + esc(c.email) + '">' + esc(c.email) + '</a></div></div></article>';
+      '<div class="agent-cta"><a class="btn btn-dark sm js-cta" href="#contato" data-corretor="' + idx + '">Falar com ' + esc(c.nome.split(' ')[0]) + '</a></div></div></article>';
   }).join('');
   $('#footCreci').textContent = S.corretores.map(function (c) { return c.nome + ' · ' + c.creci; }).join('   |   ');
 
@@ -69,16 +69,20 @@
     return '<details><summary>' + esc(f[0]) + '</summary><p>' + esc(f[1]) + '</p></details>';
   }).join('');
 
-  // Links de WhatsApp
-  function waLink(msg) { return 'https://wa.me/' + S.whatsappPrincipal + '?text=' + encodeURIComponent(msg); }
-  document.querySelectorAll('.js-wa').forEach(function (a) {
-    a.href = waLink(a.dataset.msg); a.target = '_blank'; a.rel = 'noopener';
-    a.addEventListener('click', function () { track('Contact'); });
+  // Todos os botões levam ao formulário
+  var form = $('#leadForm');
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('.js-cta'); if (!a) return;
+    e.preventDefault();
+    if (a.dataset.corretor != null) form.corretor.value = a.dataset.corretor;
+    track('ViewContent');
+    (window.innerWidth <= 820 ? form : $('#contato')).scrollIntoView({ behavior: 'smooth' });
+    setTimeout(function () { try { form.nome.focus({ preventScroll: true }); } catch (x) {} }, 700);
   });
 
   function track(ev) {
     try { if (window.fbq) fbq('track', ev); } catch (e) {}
-    try { if (window.gtag) gtag('event', ev === 'Lead' ? 'generate_lead' : 'contact'); } catch (e) {}
+    try { if (window.gtag && ev === 'Lead') gtag('event', 'generate_lead'); } catch (e) {}
   }
 
   // Máscara de telefone
@@ -90,19 +94,76 @@
     tel.value = o;
   });
 
-  // Formulário → abre WhatsApp com a mensagem pronta
-  $('#leadForm').addEventListener('submit', function (e) {
+  // Origem do anúncio (UTMs), guardada para o lead
+  var qs = new URLSearchParams(location.search), origem = {};
+  ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (k) { if (qs.get(k)) origem[k] = qs.get(k); });
+  try {
+    if (Object.keys(origem).length) localStorage.setItem('ea_origem', JSON.stringify(origem));
+    else origem = JSON.parse(localStorage.getItem('ea_origem') || '{}');
+  } catch (x) {}
+
+  // Escolhe o corretor que recebe o lead
+  function escolherCorretor() {
+    if (form.corretor.value !== '') return S.corretores[+form.corretor.value];
+    if (S.distribuicao === 'revezamento' && S.corretores.length) {
+      var i;
+      try { i = localStorage.getItem('ea_corretor'); } catch (x) {}
+      if (i == null || !S.corretores[i]) {
+        i = Math.floor(Math.random() * S.corretores.length);
+        try { localStorage.setItem('ea_corretor', i); } catch (x) {}
+      }
+      return S.corretores[i];
+    }
+    return null;
+  }
+
+  // Classificação do lead para o corretor priorizar
+  function temperatura(f) {
+    var p = 0;
+    if (/3 meses/.test(f.prazo.value) && !/6/.test(f.prazo.value)) p += 2; else if (/3 e 6/.test(f.prazo.value)) p += 1;
+    if (/À vista/.test(f.pagamento.value)) p += 2; else if (/financiamento/.test(f.pagamento.value)) p += 1;
+    if (/8 a 11|Acima/.test(f.faixa.value)) p += 2; else if (/5 a 8/.test(f.faixa.value)) p += 1;
+    if (/corretor/.test(f.objetivo.value)) p += 1;
+    return p >= 5 ? '🔥 QUENTE' : p >= 3 ? '🟡 MORNO' : '🔵 FRIO';
+  }
+
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var f = e.target, msg = $('#formMsg');
+    var f = form, msg = $('#formMsg');
     if (!f.nome.value.trim() || f.telefone.value.replace(/\D/g, '').length < 10) { msg.textContent = 'Preencha nome e WhatsApp com DDD.'; return; }
+    if (!f.objetivo.value || !f.prazo.value || !f.pagamento.value || !f.faixa.value) { msg.textContent = 'Responda as perguntas para o corretor preparar seu atendimento.'; return; }
     if (!f.lgpd.checked) { msg.textContent = 'Marque a autorização de contato para continuar.'; return; }
+
+    var c = escolherCorretor();
+    var numero = (c && c.whatsapp) || S.whatsappPrincipal;
+    var temp = temperatura(f);
+    var origemTxt = [origem.utm_source, origem.utm_campaign, origem.utm_content].filter(Boolean).join(' / ') || 'Direto / orgânico';
+
+    var texto = 'Olá' + (c ? ', ' + c.nome.split(' ')[0] : '') + '! Quero agendar uma visita à ' + im.titulo + ' (' + im.codigo + ').\n\n' +
+      '*Nome:* ' + f.nome.value.trim() + '\n' +
+      '*WhatsApp:* ' + f.telefone.value + '\n' +
+      '*Objetivo:* ' + f.objetivo.value + '\n' +
+      '*Prazo de compra:* ' + f.prazo.value + '\n' +
+      '*Pagamento:* ' + f.pagamento.value + '\n' +
+      '*Investimento previsto:* ' + f.faixa.value + '\n\n' +
+      '_Lead ' + temp + ' · Origem: ' + origemTxt + '_';
+
     track('Lead');
-    var texto = 'Olá! Quero agendar uma visita à ' + im.titulo + ' (' + im.codigo + ').\n' +
-      'Nome: ' + f.nome.value.trim() + '\nWhatsApp: ' + f.telefone.value +
-      (f.email.value ? '\nE-mail: ' + f.email.value : '') +
-      '\nPeríodo: ' + f.periodo.value + '\nPagamento: ' + f.pagamento.value;
-    msg.textContent = 'Perfeito! Abrindo o WhatsApp para confirmar sua visita…';
-    window.open(waLink(texto), '_blank');
+
+    if (S.planilhaWebhook) {
+      try {
+        fetch(S.planilhaWebhook, { method: 'POST', mode: 'no-cors', body: JSON.stringify({
+          data: new Date().toISOString(), imovel: im.codigo, nome: f.nome.value.trim(), telefone: f.telefone.value,
+          objetivo: f.objetivo.value, prazo: f.prazo.value, pagamento: f.pagamento.value, faixa: f.faixa.value,
+          temperatura: temp, corretor: c ? c.nome : 'Principal', origem: origemTxt
+        }) });
+      } catch (x) {}
+    }
+
+    var url = 'https://wa.me/' + numero + '?text=' + encodeURIComponent(texto);
+    msg.innerHTML = 'Obrigado! Se o WhatsApp não abrir, <a href="' + url + '" target="_blank" rel="noopener">toque aqui</a>.';
+    var w = window.open(url, '_blank');
+    if (!w) location.href = url;
   });
 
   // Lightbox

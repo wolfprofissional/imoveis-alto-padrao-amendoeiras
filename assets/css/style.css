@@ -249,3 +249,11 @@ h3 { font-weight: 500; }
   .hero-cta .btn { flex: 1 1 100%; }
   .faq summary { font-size: 20px; }
 }
+
+/* Formulário de qualificação */
+.form-title { font-family: var(--serif); font-size: 28px; color: var(--ivory); line-height: 1.1; margin-bottom: 4px; }
+.form-note { font-size: 12px; color: rgba(246, 242, 234, .5); }
+.form-msg a { color: var(--gold-2); text-decoration: underline; }
+.form select:invalid { color: rgba(246, 242, 234, .55); }
+#apresentacao p { font-size: 17px; font-weight: 300; margin-bottom: 18px; max-width: 52ch; }
+#contato, #leadForm { scroll-margin-top: 80px; }
