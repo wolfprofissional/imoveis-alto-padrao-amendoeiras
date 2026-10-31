@@ -97,9 +97,9 @@ window.SITE = {
   /* ---------- Corretores ---------- */
   corretores: [                                                                      // CONFIRMAR todos
     { nome: "Nome do Corretor 1", creci: "CRECI-MG 00000", foto: "assets/fotos/corretor-1.jpg",
-      bio: "Especialista em imóveis de alto padrão em Lagoa Santa e Vetor Norte.", whatsapp: "5531900000000", email: "contato@exemplo.com" },
+      bio: "Especialista em imóveis de alto padrão em Lagoa Santa e Vetor Norte.", whatsapp: "", email: "contato@exemplo.com" },
     { nome: "Nome do Corretor 2", creci: "CRECI-MG 00000", foto: "assets/fotos/corretor-2.jpg",
-      bio: "Atendimento consultivo e discreto para compradores exigentes.", whatsapp: "5531900000000", email: "contato@exemplo.com" }
+      bio: "Atendimento consultivo e discreto para compradores exigentes.", whatsapp: "", email: "contato@exemplo.com" }
   ],
   horario: "Seg a sáb, 8h às 20h",                                                  // CONFIRMAR
 
@@ -108,7 +108,7 @@ window.SITE = {
      "revezamento" → leads divididos entre os corretores (o mesmo visitante sempre cai no mesmo corretor)
      Se o visitante clicar em "Falar com [corretor]", o lead vai direto para aquele corretor. */
   distribuicao: "principal",                                                        // CONFIRMAR
-  whatsappPrincipal: "5531900000000",                                               // CONFIRMAR
+  whatsappPrincipal: "5531996399205",
 
   // Opcional: URL de um Google Apps Script para salvar cada lead numa planilha
   // (garante o registro mesmo que a pessoa não envie a mensagem no WhatsApp).
@@ -116,7 +116,7 @@ window.SITE = {
 
   /* ---------- Perguntas frequentes ---------- */
   faq: [                                                                             // CONFIRMAR respostas
-    ["Como funciona a visita?", "As visitas são privativas e agendadas com antecedência, com acompanhamento de um corretor. Basta preencher o formulário."],
+    ["Como funciona a visita?", "As visitas são privativas e agendadas com antecedência, com acompanhamento de um corretor. Basta solicitar pelo formulário."],
     ["Aceita permuta ou financiamento?", "Avaliamos propostas com permuta e financiamento. Informe no formulário e o corretor analisa o seu caso."],
     ["A documentação está regularizada?", "Escritura e matrícula ficam disponíveis para análise do comprador e do seu advogado."],
     ["O chalé tem entrada independente?", "O chalé fica na área externa da casa, com duas suítes e ar-condicionado. Conheça os detalhes na visita."]

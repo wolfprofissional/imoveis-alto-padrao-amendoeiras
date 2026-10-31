@@ -128,52 +128,12 @@
           <li>Visitas sob agendamento, sem compromisso</li>
         </ul>
       </div>
-      <form class="form" id="leadForm" novalidate>
+      <div class="contact-card">
         <p class="form-title">Agende sua visita privativa</p>
-        <input type="hidden" name="corretor" value="">
-        <label>Nome completo<input name="nome" required autocomplete="name" placeholder="Seu nome"></label>
-        <label>WhatsApp<input name="telefone" required inputmode="tel" autocomplete="tel" placeholder="(31) 9 0000-0000"></label>
-        <label>Você busca o imóvel para
-          <select name="objetivo" required>
-            <option value="">Selecione</option>
-            <option>Morar com a família</option>
-            <option>Casa de campo / fim de semana</option>
-            <option>Investimento</option>
-            <option>Sou corretor com cliente</option>
-          </select>
-        </label>
-        <label>Quando pretende comprar?
-          <select name="prazo" required>
-            <option value="">Selecione</option>
-            <option>Nos próximos 3 meses</option>
-            <option>Entre 3 e 6 meses</option>
-            <option>Entre 6 e 12 meses</option>
-            <option>Ainda estou pesquisando</option>
-          </select>
-        </label>
-        <label>Como pretende pagar?
-          <select name="pagamento" required>
-            <option value="">Selecione</option>
-            <option>À vista</option>
-            <option>À vista + permuta</option>
-            <option>Com financiamento</option>
-            <option>Ainda vou definir</option>
-          </select>
-        </label>
-        <label>Investimento previsto
-          <select name="faixa" required>
-            <option value="">Selecione</option>
-            <option>Até R$ 5 milhões</option>
-            <option>De R$ 5 a 8 milhões</option>
-            <option>De R$ 8 a 11 milhões</option>
-            <option>Acima de R$ 11 milhões</option>
-          </select>
-        </label>
-        <label class="check"><input type="checkbox" name="lgpd" required> Autorizo o contato e o uso dos meus dados para este atendimento.</label>
-        <button class="btn btn-gold full" type="submit">Enviar e falar com o corretor</button>
-        <p class="form-msg" id="formMsg" role="status"></p>
-        <p class="form-note">Ao enviar, você será direcionado ao WhatsApp do corretor com suas informações.</p>
-      </form>
+        <p>Responda 6 perguntas rápidas e um especialista prepara um atendimento sob medida para você.</p>
+        <a href="#contato" class="btn btn-gold full js-cta">Quero agendar minha visita</a>
+        <p class="form-note">Leva menos de 1 minuto.</p>
+      </div>
     </div>
   </section>
 
@@ -221,6 +181,60 @@
   <div class="mobile-bar">
     <a href="#contato" class="btn btn-gold js-cta">Agendar visita</a>
     <a href="#contato" class="btn btn-ghost js-cta">Informações</a>
+  </div>
+
+  <!-- Popup do formulário -->
+  <div class="modal" id="leadModal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-box">
+      <button class="modal-close" type="button" aria-label="Fechar">×</button>
+      <form class="form" id="leadForm" novalidate>
+      <p class="eyebrow">Visita privativa</p>
+      <p class="form-title" id="modalTitle">Agende sua visita à Residência das Amendoeiras</p>
+      <input type="hidden" name="corretor" value="">
+      <label>Nome completo<input name="nome" required autocomplete="name" placeholder="Seu nome"></label>
+      <label>WhatsApp<input name="telefone" required inputmode="tel" autocomplete="tel" placeholder="(31) 9 0000-0000"></label>
+      <label>Você busca o imóvel para
+        <select name="objetivo" required>
+          <option value="">Selecione</option>
+          <option>Morar com a família</option>
+          <option>Casa de campo / fim de semana</option>
+          <option>Investimento</option>
+          <option>Sou corretor com cliente</option>
+        </select>
+      </label>
+      <label>Quando pretende comprar?
+        <select name="prazo" required>
+          <option value="">Selecione</option>
+          <option>Nos próximos 3 meses</option>
+          <option>Entre 3 e 6 meses</option>
+          <option>Entre 6 e 12 meses</option>
+          <option>Ainda estou pesquisando</option>
+        </select>
+      </label>
+      <label>Como pretende pagar?
+        <select name="pagamento" required>
+          <option value="">Selecione</option>
+          <option>À vista</option>
+          <option>À vista + permuta</option>
+          <option>Com financiamento</option>
+          <option>Ainda vou definir</option>
+        </select>
+      </label>
+      <label>Investimento previsto
+        <select name="faixa" required>
+          <option value="">Selecione</option>
+          <option>Até R$ 5 milhões</option>
+          <option>De R$ 5 a 8 milhões</option>
+          <option>De R$ 8 a 11 milhões</option>
+          <option>Acima de R$ 11 milhões</option>
+        </select>
+      </label>
+      <label class="check"><input type="checkbox" name="lgpd" required> Autorizo o contato e o uso dos meus dados para este atendimento.</label>
+      <button class="btn btn-gold full" type="submit">Enviar</button>
+      <p class="form-msg" id="formMsg" role="status"></p>
+      <p class="form-note">Seus dados são usados apenas para este atendimento.</p>
+    </form>
+    </div>
   </div>
 
   <!-- Lightbox -->

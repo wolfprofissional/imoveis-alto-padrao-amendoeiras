@@ -8,15 +8,18 @@ Os itens marcados com `// CONFIRMAR` precisam ser revisados antes de publicar.
 
 - `mostrarValor: false` exibe "Valor sob consulta", o que tende a gerar mais contatos. Use `true` para mostrar o preço.
 - Fotos: salve em `assets/fotos/` com os nomes `capa.jpg`, `01.jpg` a `06.jpg`, `corretor-1.jpg` e `corretor-2.jpg`. Enquanto faltarem, a página mostra um espaço reservado.
-- Rastreamento: cole o Meta Pixel e o GA4 no `<head>` do `index.html`. O formulário já dispara `Lead` e `generate_lead`.
+- Rastreamento: cole o Meta Pixel e o GA4 no `<head>` do `index.html` e do `obrigado.html`.
 
 ## Como funciona o lead
-Todos os botões da página levam ao formulário de qualificação: nome, WhatsApp, objetivo, prazo de compra, forma de pagamento e investimento previsto.
-Ao enviar, o WhatsApp do corretor abre com tudo preenchido, mais a classificação do lead (🔥 quente, 🟡 morno ou 🔵 frio) e a origem do anúncio (UTMs).
+1. Todos os botões abrem um **popup** com o formulário de qualificação: nome, WhatsApp, objetivo, prazo de compra, forma de pagamento e investimento previsto.
+2. Ao enviar, o visitante vai para **`obrigado.html`**.
+3. Na página de obrigado, o botão de WhatsApp abre a conversa com o corretor com todas as respostas preenchidas, mais a classificação do lead (🔥 quente, 🟡 morno ou 🔵 frio) e a origem do anúncio (UTMs).
 
-- `distribuicao: "principal"` envia tudo para `whatsappPrincipal`. Com `"revezamento"`, os leads são divididos entre os corretores.
-- O botão "Falar com [corretor]" envia o lead direto para aquele corretor.
-- `planilhaWebhook` (opcional): salva cada lead numa planilha Google, mesmo que a pessoa não envie a mensagem.
+- WhatsApp de atendimento: `whatsappPrincipal` no `config.js`.
+- Se um corretor tiver `whatsapp` preenchido, o botão "Falar com [corretor]" envia o lead para ele. Com `distribuicao: "revezamento"`, os leads são divididos entre os corretores.
+- Os dados passam para a página de obrigado pelo navegador (sessionStorage), nunca pela URL.
+- `planilhaWebhook` (opcional): salva cada lead numa planilha Google, mesmo que a pessoa não clique no WhatsApp.
+- **Conversão nos anúncios:** cole o Pixel/GA4 também no `obrigado.html`. Ele dispara `Lead` uma única vez por envio.
 - Use UTMs nos anúncios, por exemplo `?utm_source=meta&utm_campaign=amendoeiras01`.
 
 ## Publicar

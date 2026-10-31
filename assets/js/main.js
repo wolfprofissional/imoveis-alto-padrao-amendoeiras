@@ -69,16 +69,28 @@
     return '<details><summary>' + esc(f[0]) + '</summary><p>' + esc(f[1]) + '</p></details>';
   }).join('');
 
-  // Todos os botões levam ao formulário
-  var form = $('#leadForm');
+  // Todos os botões abrem o formulário em popup
+  var form = $('#leadForm'), modal = $('#leadModal'), lastFocus = null;
+  function abrirModal(corretor) {
+    form.corretor.value = corretor != null ? corretor : '';
+    lastFocus = document.activeElement;
+    modal.hidden = false; document.body.style.overflow = 'hidden';
+    requestAnimationFrame(function () { modal.classList.add('open'); });
+    setTimeout(function () { try { form.nome.focus(); } catch (x) {} }, 250);
+    track('ViewContent');
+  }
+  function fecharModal() {
+    modal.classList.remove('open'); document.body.style.overflow = '';
+    setTimeout(function () { modal.hidden = true; }, 250);
+    if (lastFocus) try { lastFocus.focus(); } catch (x) {}
+  }
   document.addEventListener('click', function (e) {
     var a = e.target.closest('.js-cta'); if (!a) return;
-    e.preventDefault();
-    if (a.dataset.corretor != null) form.corretor.value = a.dataset.corretor;
-    track('ViewContent');
-    (window.innerWidth <= 820 ? form : $('#contato')).scrollIntoView({ behavior: 'smooth' });
-    setTimeout(function () { try { form.nome.focus({ preventScroll: true }); } catch (x) {} }, 700);
+    e.preventDefault(); abrirModal(a.dataset.corretor);
   });
+  $('.modal-close', modal).onclick = fecharModal;
+  modal.addEventListener('click', function (e) { if (e.target === modal) fecharModal(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) fecharModal(); });
 
   function track(ev) {
     try { if (window.fbq) fbq('track', ev); } catch (e) {}
@@ -135,6 +147,7 @@
     if (!f.lgpd.checked) { msg.textContent = 'Marque a autorização de contato para continuar.'; return; }
 
     var c = escolherCorretor();
+    if (c && !c.whatsapp) c = null;   // corretor sem WhatsApp próprio → número principal
     var numero = (c && c.whatsapp) || S.whatsappPrincipal;
     var temp = temperatura(f);
     var origemTxt = [origem.utm_source, origem.utm_campaign, origem.utm_content].filter(Boolean).join(' / ') || 'Direto / orgânico';
@@ -148,11 +161,9 @@
       '*Investimento previsto:* ' + f.faixa.value + '\n\n' +
       '_Lead ' + temp + ' · Origem: ' + origemTxt + '_';
 
-    track('Lead');
-
     if (S.planilhaWebhook) {
       try {
-        fetch(S.planilhaWebhook, { method: 'POST', mode: 'no-cors', body: JSON.stringify({
+        fetch(S.planilhaWebhook, { method: 'POST', mode: 'no-cors', keepalive: true, body: JSON.stringify({
           data: new Date().toISOString(), imovel: im.codigo, nome: f.nome.value.trim(), telefone: f.telefone.value,
           objetivo: f.objetivo.value, prazo: f.prazo.value, pagamento: f.pagamento.value, faixa: f.faixa.value,
           temperatura: temp, corretor: c ? c.nome : 'Principal', origem: origemTxt
@@ -160,10 +171,16 @@
       } catch (x) {}
     }
 
-    var url = 'https://wa.me/' + numero + '?text=' + encodeURIComponent(texto);
-    msg.innerHTML = 'Obrigado! Se o WhatsApp não abrir, <a href="' + url + '" target="_blank" rel="noopener">toque aqui</a>.';
-    var w = window.open(url, '_blank');
-    if (!w) location.href = url;
+    // Os dados vão para a página de obrigado pelo navegador (nunca pela URL)
+    try {
+      sessionStorage.setItem('ea_lead', JSON.stringify({
+        numero: numero, texto: texto, nome: f.nome.value.trim().split(' ')[0],
+        corretor: c ? c.nome : '', imovel: im.titulo
+      }));
+      sessionStorage.removeItem('ea_lead_contado');
+    } catch (x) {}
+    msg.textContent = 'Enviando…';
+    location.href = 'obrigado.html';
   });
 
   // Lightbox
