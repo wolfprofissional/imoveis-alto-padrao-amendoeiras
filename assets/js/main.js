@@ -162,13 +162,17 @@
       '_Lead ' + temp + ' · Origem: ' + origemTxt + '_';
 
     if (S.planilhaWebhook) {
-      try {
-        fetch(S.planilhaWebhook, { method: 'POST', mode: 'no-cors', keepalive: true, body: JSON.stringify({
-          data: new Date().toISOString(), imovel: im.codigo, nome: f.nome.value.trim(), telefone: f.telefone.value,
-          objetivo: f.objetivo.value, prazo: f.prazo.value, pagamento: f.pagamento.value, faixa: f.faixa.value,
-          temperatura: temp, corretor: c ? c.nome : 'Principal', origem: origemTxt
-        }) });
-      } catch (x) {}
+      var dados = JSON.stringify({
+        imovel: im.codigo, nome: f.nome.value.trim(), telefone: f.telefone.value,
+        objetivo: f.objetivo.value, prazo: f.prazo.value, pagamento: f.pagamento.value, faixa: f.faixa.value,
+        temperatura: temp, corretor: c ? c.nome : 'Principal', origem: origemTxt
+      });
+      // sendBeacon garante o envio mesmo com a troca de página logo em seguida
+      var enviado = false;
+      try { enviado = navigator.sendBeacon(S.planilhaWebhook, new Blob([dados], { type: 'text/plain' })); } catch (x) {}
+      if (!enviado) {
+        try { fetch(S.planilhaWebhook, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'text/plain' }, body: dados }); } catch (x) {}
+      }
     }
 
     // Os dados vão para a página de obrigado pelo navegador (nunca pela URL)
@@ -180,7 +184,7 @@
       sessionStorage.removeItem('ea_lead_contado');
     } catch (x) {}
     msg.textContent = 'Enviando…';
-    location.href = 'obrigado.html';
+    setTimeout(function () { location.href = 'obrigado.html'; }, 400);
   });
 
   // Lightbox
