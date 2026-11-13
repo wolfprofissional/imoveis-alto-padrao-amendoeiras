@@ -26,4 +26,11 @@ Os itens marcados com `// CONFIRMAR` precisam ser revisados antes de publicar.
 Site estático: GitHub Pages (Settings → Pages → branch `main`), Netlify ou Vercel.
 
 ## Identidade visual
-Provisória até existir o logo: verde-noite `#0f1412`, marfim `#f6f2ea`, bronze `#b48f5a`. Tipografia Cormorant Garamond (títulos) e Manrope (textos).
+Segue o **Manual de identidade visual Exclusividades Amendoeiras v1 (nov/2026)**.
+
+- **Marca:** arquivos SVG oficiais em `assets/marca/` (logo positivo e negativo cobre, símbolo, selo e padrões de folhas). Não redesenhe nem troque as cores.
+- **Cores:** verde amendoeira `#1F3A2E`, cobre `#A65A32` (texto pequeno `#8A4524`), areia `#F4EEE4`, linho `#E9DFD0`, tinta `#1A1D1B`. Proporção 60% areia/linho, 30% verde, 10% cobre.
+- **Tipografia:** Lora (títulos, números, citações em itálico) e Inter (textos, botões, sobretítulos em caixa alta espaçada).
+- **Grafismos:** sobretítulo, fio cobre de 1px e título; cantos retos; padrão de folhas sempre tom sobre tom e nunca atrás de texto pequeno.
+- **Botões:** principal verde, secundário em contorno, cobre para a ação sobre fundo verde e no WhatsApp, botão flutuante redondo.
+- **Voz:** anfitrião discreto, com frases curtas e informação concreta, sem superlativos nem urgência.

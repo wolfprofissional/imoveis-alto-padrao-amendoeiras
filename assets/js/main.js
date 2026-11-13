@@ -5,8 +5,8 @@
   var esc = function (t) { var d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; };
 
   // Imagem com espaço reservado elegante caso o arquivo ainda não exista
-  function photo(src, label) {
-    return '<div class="ph" data-label="' + esc(label || '') + '">' +
+  function photo(src, label, variante) {
+    return '<div class="ph' + (variante ? ' ' + variante : '') + '" data-label="' + esc(label || '') + '">' +
       (src ? '<img src="' + esc(src) + '" alt="' + esc(label || '') + '" loading="lazy" onerror="this.remove()">' : '') +
       '</div>';
   }
@@ -17,7 +17,7 @@
   var im = S.imovel, co = S.condominio;
 
   // Hero
-  $('#heroMedia').innerHTML = photo(im.capa, '');
+  $('#heroMedia').innerHTML = photo(im.capa, '', 'lisa');
   $('#priceLabel').innerHTML = im.mostrarValor
     ? '<strong>' + esc(im.valor) + '</strong> · ' + esc(im.condicoes)
     : '<strong>Valor sob consulta</strong> · ' + esc(im.condicoes);
@@ -60,7 +60,7 @@
       '<div class="agent-photo" data-ini="' + esc(ini) + '">' + (c.foto ? '<img src="' + esc(c.foto) + '" alt="' + esc(c.nome) + '" onerror="this.remove()">' : '') + '</div>' +
       '<div><h3>' + esc(c.nome) + '</h3><p class="creci">' + esc(c.creci) + '</p><p>' + esc(c.bio) + '</p>' +
       '<p class="hours">' + esc(S.horario) + '</p>' +
-      '<div class="agent-cta"><a class="btn btn-dark sm js-cta" href="#contato" data-corretor="' + idx + '">Falar com ' + esc(c.nome.split(' ')[0]) + '</a></div></div></article>';
+      '<div class="agent-cta"><a class="btn btn-sec js-cta" href="#contato" data-corretor="' + idx + '">Conversar com ' + esc(c.nome.split(' ')[0]) + '</a></div></div></article>';
   }).join('');
   $('#footCreci').textContent = S.corretores.map(function (c) { return c.nome + ' · ' + c.creci; }).join('   |   ');
 
@@ -99,8 +99,12 @@
 
   // Máscara de telefone
   var tel = $('[name=telefone]');
+  tel.setAttribute('maxlength', '19');
   tel.addEventListener('input', function () {
-    var d = tel.value.replace(/\D/g, '').slice(0, 11), o = d;
+    var d = tel.value.replace(/\D/g, '');
+    if (d.length > 11 && d.indexOf('55') === 0) d = d.slice(2);   // remove o +55 do Brasil
+    d = d.slice(0, 11);
+    var o = d;
     if (d.length > 2) o = '(' + d.slice(0, 2) + ') ' + d.slice(2);
     if (d.length > 7) o = '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7);
     tel.value = o;
@@ -178,7 +182,7 @@
     // Os dados vão para a página de obrigado pelo navegador (nunca pela URL)
     try {
       sessionStorage.setItem('ea_lead', JSON.stringify({
-        numero: numero, texto: texto, nome: f.nome.value.trim().split(' ')[0],
+        numero: numero, texto: texto, nome: (function (n) { return n.charAt(0).toUpperCase() + n.slice(1).toLowerCase(); })(f.nome.value.trim().split(' ')[0]),
         corretor: c ? c.nome : '', imovel: im.titulo
       }));
       sessionStorage.removeItem('ea_lead_contado');

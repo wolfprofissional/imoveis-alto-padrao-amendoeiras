@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Obrigado · Residência das Amendoeiras</title>
+  <title>Visita solicitada · Exclusividades Amendoeiras</title>
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#0f1412">
+  <meta name="theme-color" content="#f4eee4">
+  <link rel="icon" type="image/svg+xml" href="assets/marca/simbolo-principal.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261030-2">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261113-1">
 
   <!-- ===== RASTREAMENTO =====
        Cole aqui o MESMO Meta Pixel e GA4 da página principal.
@@ -19,42 +20,39 @@
 </head>
 <body class="thanks">
 
-  <header class="topbar solid">
+  <header class="topbar">
     <a class="brand" href="index.html" aria-label="Voltar ao imóvel">
-      <span class="brand-mono" data-bind="marca.monograma"></span>
-      <span class="brand-text"><strong data-bind="marca.nome"></strong><em data-bind="marca.sufixo"></em></span>
+      <img src="assets/marca/logo-horizontal-positivo.svg" alt="Exclusividades Amendoeiras" width="361" height="80">
     </a>
   </header>
 
   <main class="thanks-main">
     <div class="thanks-box">
-      <span class="thanks-mark" aria-hidden="true">✦</span>
-      <p class="eyebrow">Cadastro recebido</p>
+      <img src="assets/marca/simbolo-principal.svg" alt="" width="30" height="38">
+      <p class="eyebrow">Visita solicitada</p>
+      <span class="fio"></span>
       <h1 id="thanksTitle">Obrigado.</h1>
-      <p class="thanks-lead">Seu pedido de visita à <strong id="thanksImovel">Residência das Amendoeiras</strong> foi recebido. Para agilizar o seu atendimento, envie agora suas informações ao corretor pelo WhatsApp.</p>
+      <p class="thanks-lead">Recebemos seu pedido de visita à <strong id="thanksImovel">Residência das Amendoeiras</strong>. Envie suas respostas ao corretor pelo WhatsApp para confirmar a data.</p>
 
-      <a class="btn btn-wa" id="waBtn" href="#" target="_blank" rel="noopener">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.7a10.7 10.7 0 0 1-5.5-1.5l-.4-.2-3.9 1 1-3.8-.3-.4A10.7 10.7 0 1 1 16 26.7zm5.9-8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7 0a8.8 8.8 0 0 1-4.4-3.8c-.3-.6.3-.5 1-1.7.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.7 3.7 0 0 0-1.1 2.7 6.4 6.4 0 0 0 1.3 3.4 14.7 14.7 0 0 0 5.6 5c2.1.9 2.9 1 4 .8a3.4 3.4 0 0 0 2.2-1.6 2.8 2.8 0 0 0 .2-1.6c0-.2-.3-.3-.6-.4z"/></svg>
-        Falar com o corretor no WhatsApp
+      <a class="btn btn-ace" id="waBtn" href="#" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20l1.2-4.2A8.5 8.5 0 1 1 20.5 11.5z"/></svg>
+        Falar no WhatsApp
       </a>
 
       <ol class="steps">
         <li><b>01</b><span>Envie a mensagem no WhatsApp</span></li>
         <li><b>02</b><span>O corretor confirma data e horário</span></li>
-        <li><b>03</b><span>Visita privativa à residência</span></li>
+        <li><b>03</b><span>Visita à residência, sem compromisso</span></li>
       </ol>
 
-      <a class="back" href="index.html">← Voltar para o imóvel</a>
+      <a class="back" href="index.html">Voltar para o imóvel</a>
     </div>
   </main>
 
-  <script src="assets/js/config.js?v=20261030-2"></script>
+  <script src="assets/js/config.js?v=20261113-1"></script>
   <script>
   (function () {
     var S = window.SITE;
-    document.querySelectorAll('[data-bind]').forEach(function (el) {
-      el.textContent = el.dataset.bind.split('.').reduce(function (o, k) { return o && o[k]; }, S) || '';
-    });
 
     var lead = null;
     try { lead = JSON.parse(sessionStorage.getItem('ea_lead') || 'null'); } catch (e) {}

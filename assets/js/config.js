@@ -4,21 +4,19 @@
    ===================================================================== */
 
 window.SITE = {
-  /* ---------- Marca provisória (até existir o logo) ---------- */
-  marca: {
-    nome: "Exclusividades",          // CONFIRMAR — nome da parceria
-    sufixo: "Amendoeiras",
-    monograma: "EA"
-  },
+  /* ---------- Marca ----------
+     Logo, símbolo e padrões oficiais ficam em assets/marca/ (SVG do manual v1).
+     Não redesenhe nem troque as cores dos arquivos. */
+  marca: { nome: "Exclusividades Amendoeiras" },
 
   /* ---------- Imóvel ---------- */
   imovel: {
     codigo: "AM-01",
     titulo: "Residência das Amendoeiras",          // CONFIRMAR — nome comercial
-    chamada: "5.000 m² de terreno, 5 suítes e lazer de clube privativo no Condomínio Estância das Amendoeiras.",
+    chamada: "5.000 m² de terreno, 5 suítes e lazer privativo, no Condomínio Estância das Amendoeiras.",
     valor: "R$ 9.500.000",                         // CONFIRMAR — valor de venda de vocês
     mostrarValor: false,                           // false = "Valor sob consulta" (gera mais contato)
-    condicoes: "Visitas privativas sob agendamento",
+    condicoes: "Visitas sob agendamento",
 
     // Números em destaque
     numeros: [
@@ -37,9 +35,9 @@ window.SITE = {
 
     // 3 a 5 maiores diferenciais
     diferenciais: [
-      { titulo: "5.000 m² de terreno", texto: "Espaço, privacidade e natureza raros mesmo entre os imóveis de alto padrão da região." },
+      { titulo: "5.000 m² de terreno", texto: "Espaço para a família, privacidade e natureza dentro do condomínio." },
       { titulo: "Chalé com 2 suítes", texto: "Casa de hóspedes independente, com ar-condicionado, para receber família e amigos com conforto." },
-      { titulo: "Lazer de clube", texto: "Piscina, sauna, quadra de tênis e casa de boneca, cercados por um paisagismo exuberante." },
+      { titulo: "Lazer privativo", texto: "Piscina, sauna, quadra de tênis e casa de boneca, cercados pelo paisagismo." },
       { titulo: "Cozinha externa", texto: "Fogão a lenha generoso, churrasqueira e armários, com persianas que filtram o sol e deixam o ar circular." },
       { titulo: "Suíte master", texto: "Closet e varanda com vista privilegiada, no andar íntimo com rouparia." }
     ],
@@ -83,7 +81,7 @@ window.SITE = {
   condominio: {
     nome: "Condomínio Estância das Amendoeiras",
     endereco: "R. das Amendoeiras, 35 — Lagoa Santa, MG",
-    textoIntro: "Um dos endereços mais exclusivos do Vetor Norte, cercado de verde e a poucos minutos do Aeroporto de Confins.",
+    textoIntro: "Ruas arborizadas, silêncio e verde no Vetor Norte, a poucos minutos do Aeroporto de Confins.",
     seguranca: ["Portaria 24h", "Monitoramento", "Ronda"],                          // CONFIRMAR
     infraestrutura: ["Áreas verdes", "Ruas arborizadas", "Espaço para caminhadas"],  // CONFIRMAR
     distancias: [                                                                    // CONFIRMAR
@@ -97,9 +95,9 @@ window.SITE = {
   /* ---------- Corretores ---------- */
   corretores: [                                                                      // CONFIRMAR todos
     { nome: "Nome do Corretor 1", creci: "CRECI-MG 00000", foto: "assets/fotos/corretor-1.jpg",
-      bio: "Especialista em imóveis de alto padrão em Lagoa Santa e Vetor Norte.", whatsapp: "", email: "contato@exemplo.com" },
+      bio: "Corretor sócio. Imóveis de alto padrão em Lagoa Santa e no Vetor Norte.", whatsapp: "", email: "contato@exemplo.com" },
     { nome: "Nome do Corretor 2", creci: "CRECI-MG 00000", foto: "assets/fotos/corretor-2.jpg",
-      bio: "Atendimento consultivo e discreto para compradores exigentes.", whatsapp: "", email: "contato@exemplo.com" }
+      bio: "Corretor sócio. Atendimento consultivo, do primeiro contato à escritura.", whatsapp: "", email: "contato@exemplo.com" }
   ],
   horario: "Seg a sáb, 8h às 20h",                                                  // CONFIRMAR
 
